@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineFlow AI - Kenan Elizade</title>
     <style>
-        /* 1. SETUP & DARK THEME */
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
-            --accent: #facc15; /* Gold */
+            --accent: #facc15; 
             --text: #f8fafc;
         }
         * { box-sizing: border-box; transition: all 0.3s ease; }
@@ -18,8 +17,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; padding: 20px;
         }
-
-        /* 2. HEADER & SEARCH */
         .header { text-align: center; padding: 40px 0; }
         .header p { color: #94a3b8; font-size: 14px; }
         #search-box {
@@ -28,8 +25,6 @@
             background-color: #111827; color: white; font-size: 16px;
         }
         #search-box:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 10px rgba(250, 204, 21, 0.3); }
-
-        /* 3. MOVIE GRID */
         .movie-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px; max-width: 1200px; margin: 0 auto;
@@ -46,9 +41,6 @@
             position: absolute; top: 20px; right: 20px;
         }
         .movie-desc { color: #cbd5e1; font-size: 14px; line-height: 1.5; }
-
-        /* 4. KENANO AI ANIMATED CHAT BOX */
-        /* Floating Button */
         #kenano-toggle {
             position: fixed; bottom: 30px; right: 30px;
             width: 60px; height: 60px; background-color: var(--accent);
@@ -56,41 +48,26 @@
             color: #000; font-size: 24px; cursor: pointer; z-index: 1000;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
-        #kenano-toggle:hover { transform: scale(1.1); }
-
-        /* Chat Panel */
         #kenano-panel {
             position: fixed; bottom: 100px; right: 30px;
             width: 380px; height: 500px; background-color: white; color: black;
             border-radius: 15px; display: none; flex-direction: column;
             overflow: hidden; z-index: 1001; box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            /* Animation Setup */
             transform: scale(0); transform-origin: bottom right;
         }
-        /* Animation Classes */
         #kenano-panel.open { display: flex; animation: kenano-open 0.4s forwards; }
         #kenano-panel.close { animation: kenano-close 0.4s forwards; }
-
         @keyframes kenano-open { to { transform: scale(1); } }
         @keyframes kenano-close { from { transform: scale(1); } to { transform: scale(0); display: none; } }
-
-        /* Chat UI Details */
-        .chat-header {
-            background-color: var(--accent); color: black; padding: 15px;
-            font-weight: 700; display: flex; justify-content: space-between; align-items: center;
-        }
+        .chat-header { background-color: var(--accent); color: black; padding: 15px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
         .close-btn { cursor: pointer; font-size: 20px; }
-        
         #chat-content { flex-grow: 1; padding: 15px; overflow-y: auto; text-align: left; font-size: 14px; display: flex; flex-direction: column; gap: 10px; }
         .message { padding: 8px 12px; border-radius: 8px; max-width: 80%; }
         .user-msg { background-color: #e0e0e0; align-self: flex-end; }
         .kenano-msg { background-color: #fff9db; border: 1px solid rgba(250,204,21,0.3); align-self: flex-start; }
-        
         .chat-input-area { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; }
         #user-input { flex-grow: 1; padding: 10px; border-radius: 5px; border: 1px solid #ddd; outline: none; }
-        #user-input:focus { border-color: var(--accent); }
         #send-btn { background-color: var(--accent); color: black; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 700; }
-
     </style>
 </head>
 <body>
@@ -102,8 +79,7 @@
 
     <input type="text" id="search-box" placeholder="🔍 Hansı filmi axtarırsınız?" onkeyup="filterMovies()">
 
-    <div class="movie-grid" id="movie-grid">
-        </div>
+    <div class="movie-grid" id="movie-grid"></div>
 
     <div id="kenano-toggle" onclick="toggleKenano()">🤖</div>
 
@@ -122,7 +98,6 @@
     </div>
 
     <script>
-        // 3. Film Bazası (imdb, qısa məlumat)
         const movies = [
             { title: "Dune: Part Two", imdb: 8.5, desc: "Paul Atreides Arrakis səhrasında taleh və intiqam uğrunda epik mübarizə aparır." },
             { title: "The Wild Robot", imdb: 8.4, desc: "Adada tək qalan robotun təbiət və heyvanlarla dostluq hekayəsi." },
@@ -132,7 +107,6 @@
             { title: "Kingdom of the Planet of the Apes", imdb: 7.0, desc: "Meymunlar hakimiyyətdədir, insanlar isə gizlənir." }
         ];
 
-        // Film kartlarını ekrana çap etmək
         function displayMovies() {
             const grid = document.getElementById('movie-grid');
             movies.forEach(movie => {
@@ -148,7 +122,6 @@
         }
         displayMovies();
 
-        // 2. Film axtarma mexanizmi
         function filterMovies() {
             const search = document.getElementById('search-box').value.toLowerCase();
             const cards = document.querySelectorAll('.movie-card');
@@ -158,9 +131,7 @@
             });
         }
 
-        // 1 & 4. Kenano Animasiya və Real AI
         let kenanoState = "closed";
-
         function toggleKenano() {
             const panel = document.getElementById('kenano-panel');
             if (kenanoState === "closed") {
@@ -169,33 +140,28 @@
             } else {
                 panel.className = "close";
                 kenanoState = "closed";
-                // Animasiya bitəndən sonra display-i yox etmək üçün
                 setTimeout(() => { if (kenanoState === "closed") panel.style.display = "none"; }, 400);
             }
         }
 
-        // Real AI Groq bağlantısı
         async function askKenano() {
             const input = document.getElementById('user-input');
             const content = document.getElementById('chat-content');
             const msg = input.value;
             if (!msg) return;
 
-            // İstifadəçi mesajını ekrana əlavə et
             const userDiv = document.createElement('div');
             userDiv.className = "message user-msg";
             userDiv.innerText = msg;
             content.appendChild(userDiv);
-            input.value = ""; // Girişi təmizlə
-            content.scrollTop = content.scrollHeight; // Avto-scroll
+            input.value = ""; 
+            content.scrollTop = content.scrollHeight;
 
-            // "Gedə bilərsən" kontrolü
             if (msg.toLowerCase().includes("gedə bilərsən")) {
                 toggleKenano();
                 return;
             }
 
-            // AI "düşünür" mesajı
             const thoughtDiv = document.createElement('div');
             thoughtDiv.className = "message kenano-msg";
             thoughtDiv.innerText = "Kenano düşünür...";
@@ -211,15 +177,15 @@
                     },
                     body: JSON.stringify({
                         model: "llama-3.3-70b-versatile",
-                        messages: [{role: "system", content: "Sən Kenano adlı film mütəxəssisisən. Səmimi, qısa və peşəkar cavab ver."},
+                        messages: [{role: "system", content: "Sən Kenano adlı film mütəxəssisisən."},
                           {"role": "user", "content": msg}]
                     })
                 });
                 const data = await response.json();
-                thoughtDiv.innerText = data.choices[0].message.content; // Cavabı yenilə
+                thoughtDiv.innerText = data.choices[0].message.content;
                 content.scrollTop = content.scrollHeight;
             } catch (error) {
-                thoughtDiv.innerText = "Xəta: API bağlantısı kəsildi. Bir daha cəhd et.";
+                thoughtDiv.innerText = "Xəta: API bağlantısı kəsildi.";
             }
         }
     </script>
