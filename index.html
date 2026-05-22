@@ -2,53 +2,48 @@
 <html lang="az">
 <head>
     <meta charset="UTF-8">
-    <title>CineFlow AI - Kenan Elizade</title>
+    <title>CineFlow AI</title>
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
-        .movie-card { background: white; padding: 15px; margin: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        #kenano-box { position: fixed; bottom: 20px; right: 20px; width: 300px; height: 400px; background: white; border: 2px solid #333; display: none; padding: 10px; }
+        body { background: #0f172a; color: white; font-family: sans-serif; padding: 20px; }
+        .movie-card { background: #1e293b; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        #kenano-chat { border-top: 2px solid gold; margin-top: 20px; padding-top: 10px; }
     </style>
 </head>
 <body>
-    <h1 style="text-align:center;">🎬 CineFlow AI</h1>
-    <p style="text-align:center;">Developed by Kenan Elizade</p>
-    
-    <input type="text" id="search" placeholder="Film axtarın...">
+    <h1>🎬 CineFlow AI</h1>
+    <p>Developed by Kenan Elizade</p>
     
     <div id="movies">
         <div class="movie-card"><h3>Dune: Part Two</h3><p>IMDB: 8.5</p></div>
-        <div class="movie-card"><h3>The Wild Robot</h3><p>IMDB: 8.4</p></div>
     </div>
 
-    <button onclick="toggleKenano()">🤖 Kenano'nu Aç</button>
-
-    <div id="kenano-box">
-        <h3>Kenano AI</h3>
-        <textarea id="kenano-input"></textarea>
-        <button onclick="askKenano()">Göndər</button>
-        <p id="kenano-reply"></p>
+    <div id="kenano-chat">
+        <h3>🤖 Kenano Assistant</h3>
+        <input type="text" id="user-msg" placeholder="Film sonluğunu soruş...">
+        <button onclick="askKenano()">Soruş</button>
+        <p id="response"></p>
     </div>
 
     <script>
-        function toggleKenano() {
-            let box = document.getElementById('kenano-box');
-            box.style.display = box.style.display === 'none' ? 'block' : 'none';
-        }
-        function askKenano() {
-            document.getElementById('kenano-reply').innerText = "Kenano düşünür... (Buraya API inteqrasiyası qoşulacaq)";
+        async function askKenano() {
+            const msg = document.getElementById('user-msg').value;
+            document.getElementById('response').innerText = "Kenano düşünür...";
+            
+            // API sorğusu (Groq)
+            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer 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",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: "llama-3.3-70b-versatile",
+                    messages: [{role: "user", content: msg}]
+                })
+            });
+            const data = await response.json();
+            document.getElementById('response').innerText = data.choices[0].message.content;
         }
     </script>
-<script>
-    // Kenano üçün sadə bir mesaj funksiyası
-    async function askKenano() {
-        const userInput = document.getElementById('kenano-input').value;
-        document.getElementById('kenano-reply').innerText = "Kenano düşünür...";
-        
-        // Buraya Groq API-ni birbaşa bağlamaq təhlükəlidir (API açarını gizlətmək üçün).
-        // İlkin mərhələdə sadəcə cavab simulyasiyası:
-        document.getElementById('kenano-reply').innerText = "Kenano: " + userInput + " mövzusu üzrə araşdırma aparıram...";
-    }
-</script>
-    
 </body>
 </html>
