@@ -38,5 +38,17 @@
             document.getElementById('kenano-reply').innerText = "Kenano düşünür... (Buraya API inteqrasiyası qoşulacaq)";
         }
     </script>
+<script>
+    // Kenano üçün sadə bir mesaj funksiyası
+    async function askKenano() {
+        const userInput = document.getElementById('kenano-input').value;
+        document.getElementById('kenano-reply').innerText = "Kenano düşünür...";
+        
+        // Buraya Groq API-ni birbaşa bağlamaq təhlükəlidir (API açarını gizlətmək üçün).
+        // İlkin mərhələdə sadəcə cavab simulyasiyası:
+        document.getElementById('kenano-reply').innerText = "Kenano: " + userInput + " mövzusu üzrə araşdırma aparıram...";
+    }
+</script>
+    
 </body>
 </html>
