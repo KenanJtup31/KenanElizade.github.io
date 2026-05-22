@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>CineFlow AI - Kenan Elizade</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
+        .movie-card { background: white; padding: 15px; margin: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        #kenano-box { position: fixed; bottom: 20px; right: 20px; width: 300px; height: 400px; background: white; border: 2px solid #333; display: none; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;">🎬 CineFlow AI</h1>
+    <p style="text-align:center;">Developed by Kenan Elizade</p>
+    
+    <input type="text" id="search" placeholder="Film axtarın...">
+    
+    <div id="movies">
+        <div class="movie-card"><h3>Dune: Part Two</h3><p>IMDB: 8.5</p></div>
+        <div class="movie-card"><h3>The Wild Robot</h3><p>IMDB: 8.4</p></div>
+    </div>
+
+    <button onclick="toggleKenano()">🤖 Kenano'nu Aç</button>
+
+    <div id="kenano-box">
+        <h3>Kenano AI</h3>
+        <textarea id="kenano-input"></textarea>
+        <button onclick="askKenano()">Göndər</button>
+        <p id="kenano-reply"></p>
+    </div>
+
+    <script>
+        function toggleKenano() {
+            let box = document.getElementById('kenano-box');
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        }
+        function askKenano() {
+            document.getElementById('kenano-reply').innerText = "Kenano düşünür... (Buraya API inteqrasiyası qoşulacaq)";
+        }
+    </script>
+</body>
+</html>
